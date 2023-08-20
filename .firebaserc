@@ -1,0 +1,21 @@
+{
+  "targets": {
+    "ringoffiregp": {
+      "hosting": {
+        "ringoffire": [
+          "ringoffiregp"
+        ]
+      }
+    },
+    "ring-of-fire-efb7f": {
+      "hosting": {
+        "ringoffire": [
+          "ring-of-fire-efb7f"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "ring-of-fire-efb7f"
+  }
+}

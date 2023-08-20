@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Game } from 'src/models/game';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogAddPlayerComponent } from '../dialog-add-player/dialog-add-player.component';
+import { Firestore, collectionData, collection, setDoc, doc, addDoc } from '@angular/fire/firestore';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-game',
@@ -13,16 +15,33 @@ export class GameComponent implements OnInit {
   currentCard = '';
   game: Game;
 
-  constructor(public dialog: MatDialog) { }
+  games$: Observable<any>;
+  currentGame: Array<any>;
+
+
+  constructor(private firestore: Firestore, public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.newGame();
+    this.firestoreDatabase();
+  }
+
+// datenbank wird nicht gefunden
+  firestoreDatabase() {
+    const itemCollection = collection(this.firestore, 'games');
+    this.games$ = collectionData(itemCollection);
+
+    this.games$.subscribe((update) => {
+      console.log('Game update:', update)
+      this.currentGame = update;
+    })
   }
 
 
   newGame() {
     this.game = new Game();
-    console.log(this.game)
+    const itemCollection = collection(this.firestore, 'games');
+    addDoc(itemCollection, {game: this.game.toJson()});
   }
 
 
