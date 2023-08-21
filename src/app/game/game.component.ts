@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Game } from 'src/models/game';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogAddPlayerComponent } from '../dialog-add-player/dialog-add-player.component';
-import { Firestore, collectionData, collection, setDoc, doc, addDoc } from '@angular/fire/firestore';
+import { Firestore, collectionData, collection, setDoc, doc, addDoc, docData } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-game',
@@ -19,29 +20,35 @@ export class GameComponent implements OnInit {
   currentGame: Array<any>;
 
 
-  constructor(private firestore: Firestore, public dialog: MatDialog) { }
+  constructor(private route: ActivatedRoute, private firestore: Firestore, public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.newGame();
-    this.firestoreDatabase();
+    this.route.params.subscribe((params) => {
+      console.log(params);
+
+      this.firestoreDatabase(params);
+    })
   }
 
-// datenbank wird nicht gefunden
-  firestoreDatabase() {
-    const itemCollection = collection(this.firestore, 'games');
-    this.games$ = collectionData(itemCollection);
 
-    this.games$.subscribe((update) => {
-      console.log('Game update:', update)
-      this.currentGame = update;
+  firestoreDatabase(params: any) {
+    const itemCollection = doc(this.firestore, 'games', params.id);
+    this.games$ = docData(itemCollection);
+
+    this.games$.subscribe((game: any) => {
+      console.log('Game update:', game);
+      // this.currentGame = game;
+      this.game.currentPlayer = game.currentPlayer;
+      this.game.playedCards = game.playedCards;
+      this.game.players = game.players;
+      this.game.stack = game.stack;
     })
   }
 
 
   newGame() {
     this.game = new Game();
-    const itemCollection = collection(this.firestore, 'games');
-    addDoc(itemCollection, {game: this.game.toJson()});
   }
 
 
