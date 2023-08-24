@@ -1,3 +1,40 @@
+.scroll-container {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    display: flex;
+    overflow-y: auto;
+
+    app-player-mobile {
+        margin-left: 8px;
+    }
+}
+
+app-player-mobile, app-player {
+    cursor: pointer;
+    &:hover {
+        filter: brightness(1.15);
+    }
+}
+
+.game-over {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+
+    img {
+        width: 400px;
+    }
+}
+
+.preload-images {
+    opacity: 0;
+    z-index: -9999;
+}
+
 .field {
     width: 100vw;
     height: 100vh;
@@ -53,6 +90,7 @@
 .player-position {
     position: absolute;
     right: 0;
+    z-index: 1;
 }
 
 .btn-add {
@@ -66,4 +104,10 @@
     bottom: 32px;
     left: 100px;
     right: 100px;
+
+    @media (max-width: 960px) {
+        bottom: 0px;
+        left: 0px;
+        right: 0px;
+    }
 }

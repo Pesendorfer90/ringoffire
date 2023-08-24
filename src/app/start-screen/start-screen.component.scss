@@ -10,6 +10,10 @@
     img {
         height: 100vh;
     }
+
+    @media (max-width: 960px) {
+        overflow: hidden;
+    }
 }
 
 .start-lable-box {
@@ -27,6 +31,10 @@
         &:hover {
             filter: brightness(1.5);
             cursor: pointer;
+        }
+
+        @media (max-width: 960px) {
+            width: 400px;
         }
     }
 }
